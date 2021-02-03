@@ -1,19 +1,13 @@
 package com.example.weatherforecast
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weatherforecast.dto.WeatherDto
-import com.google.gson.Gson
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-
 class MainActivity : AppCompatActivity() {
-
+    val weatherViewModel by viewModels<WeatherViewModel>()
     val weatherAdapter = WeatherAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,29 +21,17 @@ class MainActivity : AppCompatActivity() {
         weather.layoutManager = linearLayoutManager
         weather.adapter = weatherAdapter
 
-        val thread = Thread(Runnable {
+        weatherViewModel.weeklyLiveData.observe(this) {
+            weatherAdapter.addItems(it)
+        }
 
-            val okHttpClient = OkHttpClient()
-            val request: Request = Request.Builder()
-                .url("https://api.openweathermap.org/data/2.5/onecall?lat=33.441792&lon=-94.037689&appid=f134e6d1b5bf882ec11dd885003fcf29&exclude=minutely,current,hourly&units=metric")
-                .method("GET", null)
-                .build()
-            val response: Response = okHttpClient.newCall(request).execute()
-            Thread.sleep(3000)
-            print("=============================")
-            // print(response.body?.string())
-            val json = response.body?.string()
+        weatherViewModel.getWeather()
 
+        /*val runnable = Runnable { weatherViewModel.getWeather() }
 
-            val gson = Gson()
-            val weatherDto: WeatherDto = gson.fromJson(json, WeatherDto::class.java)
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed(runnable, 5000)
 
-            Handler(Looper.getMainLooper()).post {
-                weatherAdapter.addItems(weatherDto.daily)
-            }
-        })
-
-        thread.start()
-
+        handler.removeCallbacks(runnable)*/
     }
 }
