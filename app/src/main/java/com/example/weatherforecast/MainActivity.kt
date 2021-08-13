@@ -26,12 +26,5 @@ class MainActivity : AppCompatActivity() {
         }
 
         weatherViewModel.getWeather()
-
-        /*val runnable = Runnable { weatherViewModel.getWeather() }
-
-        val handler = Handler(Looper.getMainLooper())
-        handler.postDelayed(runnable, 5000)
-
-        handler.removeCallbacks(runnable)*/
     }
 }
