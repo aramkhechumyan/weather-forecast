@@ -16,11 +16,5 @@ class WeatherViewModel : ViewModel() {
                 weeklyLiveData.value = daysDto
             }
         })
-
-
     }
-
-/*    fun quit(){
-        looper.quit()
-    }*/
 }
