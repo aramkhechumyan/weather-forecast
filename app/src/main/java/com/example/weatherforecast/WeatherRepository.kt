@@ -26,14 +26,10 @@ class WeatherRepository {
                     weatherDto?.let {
                         weatherCallback.callback(it.daily)
                     }
-
-                } else {
-
                 }
             }
 
             override fun onFailure(call: Call<WeatherDto>, t: Throwable) {
-                TODO("Not yet implemented")
             }
 
         })
